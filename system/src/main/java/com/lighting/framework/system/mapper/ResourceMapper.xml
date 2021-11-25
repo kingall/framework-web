@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lighting.framework.system.mapper.ResourceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lighting.framework.system.domain.Resource">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="pid" property="pid" />
+        <result column="level" property="level" />
+        <result column="URL" property="url" />
+        <result column="icon_type" property="iconType" />
+        <result column="icon_text" property="iconText" />
+        <result column="icon_image" property="iconImage" />
+        <result column="description" property="description" />
+        <result column="sort" property="sort" />
+        <result column="creater" property="creater" />
+        <result column="create_time" property="createTime" />
+        <result column="updater" property="updater" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, type, pid, level, URL, icon_type, icon_text, icon_image, description, sort, creater, create_time, updater, update_time
+    </sql>
+	<select id="getResourceListByUserId" resultMap="BaseResultMap" parameterType="string">
+		select 
+			r.id,
+			r.NAME,
+			r.type,
+			r.pid,
+			r.LEVEL,
+			r.URL,
+			r.icon_type,
+			r.icon_text,
+			r.icon_image,
+			r.description,
+			r.sort,
+			r.creater,
+			r.create_time,
+			r.updater,
+			r.update_time
+		from sys_resource r
+			INNER JOIN sys_resource_role rr ON r.id = rr.resource_id 
+			INNER JOIN sys_account_role ur on rr.role_id = ur.role_id
+		where ur.user_id = #{userId}
+		ORDER BY r.level ,r.sort asc
+	</select>
+	<select id="getResourceListByRoleId" resultMap="BaseResultMap" parameterType="string">
+		select 
+			r.id,
+			r.NAME,
+			r.type,
+			r.pid,
+			r.LEVEL,
+			r.URL,
+			r.icon_type,
+			r.icon_text,
+			r.icon_image,
+			r.description,
+			r.sort,
+			r.creater,
+			r.create_time,
+			r.updater,
+			r.update_time
+		from sys_resource r
+			INNER JOIN sys_resource_role rr ON r.id = rr.resource_id 
+		where rr.role_id = #{roleId}
+	</select>
+</mapper>

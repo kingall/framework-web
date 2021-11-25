@@ -1,0 +1,115 @@
+package ${package.Controller};
+
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+#if(${restControllerStyle})
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import cn.com.all.framework.core.common.BaseController;
+import cn.com.all.framework.core.common.BaseResponse;
+import cn.com.all.framework.core.util.QueryWrapperBuilder;
+
+import ${package.Entity}.${entity};
+import ${package.Service}.${table.serviceName};
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+@RequestMapping("/api#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} extends BaseController{
+	@Autowired
+	private ${table.serviceName} ${table.serviceImplName};
+
+	/**
+	 * 列表查询
+	 * 
+	 * @return
+	 */
+	@PostMapping("/get${entity}List")
+	public BaseResponse get${entity}List(HttpServletRequest request) {
+		List<${entity}> list = ${table.serviceImplName}.list(QueryWrapperBuilder.buildFromRequest(request, ${entity}.class));
+		return buildRowsResponse(list);
+	}
+	
+	/**
+	 * 分页查询查询
+	 * 
+	 * @return
+	 */
+	@PostMapping("/get${entity}ListByPage")
+	public BaseResponse /get${entity}ListByPage(Page<${entity}> page, HttpServletRequest request) {
+		IPage<${entity}> iPage = ${table.serviceImplName}.page(page, QueryWrapperBuilder.buildFromRequest(request, ${entity}.class));
+		return buildRowsResponse(iPage);
+	}
+	
+	/**
+	 * 保存数据
+	 * 
+	 * @return
+	 */
+	@PostMapping("/save${entity}")
+	public BaseResponse save${entity}( ${entity}  ${entity}) {
+		${table.serviceImplName}.saveOrUpdate(${entity});
+		return new BaseResponse(0, "保存成功");
+	}
+	
+	/**
+	 * 删除数据
+	 * 
+	 * @return
+	 */
+	@PostMapping("/del${entity}")
+	public BaseResponse del${entity}( String  id) {
+		${table.serviceImplName}.removeById(id);
+		return new BaseResponse(0, "删除成功");
+	}
+	
+	/**
+	 * 根据id获取数据
+	 * 
+	 * @return
+	 */
+	@PostMapping("/get${entity}ById")
+	public BaseResponse get${entity}ById( String  id) {
+		return buildStandardResponse(${table.serviceImplName}.getById(id));
+	}
+#end
+
+}
+
+#end
