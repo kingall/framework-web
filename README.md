@@ -1,16 +1,13 @@
-#framework-web Introduce
-##Quick start
-###Environment
+#framework-web Introduce  
+##Quick start  
+###Environment  
 1、maven  
 2、git  
 3、java1.8+
 ###Step 1、install framework 
 install framework into local maven repository  
 `mvn install`
-###Step 2、create new project use idea IDE. 
-![img_2.png](img_2.png)  
-  
-![img_3.png](img_3.png)  
+###Step 2、create new project use idea IDE.
 ###Step 3、 update pom.xml
 add parent element.  
 `<parent>`   
@@ -25,7 +22,7 @@ add framework dependency.
 `<groupId>cn.alldimensions</groupId>`  
 `<version>1.0.0</version>`  
 `</dependency>`  
-### Step 4、 add springboot boot file：  
+### Step 4、 add springboot boot file 
 
 `@SpringBootApplication`  
 `@MapperScan("xxx.xxx.xxx.**.mapper")`  
