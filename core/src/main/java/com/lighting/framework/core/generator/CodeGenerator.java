@@ -69,6 +69,7 @@ public class CodeGenerator {
         //更新时仅生xml和entity
         if (Commond.UPDATE.equals(commond)) {
             TemplateConfig templateConfig = new TemplateConfig();
+            ((ExpandAutoGenerator)mpg).remove(TemplateType.MAPPER, TemplateType.ENTITY);
             templateConfig.disable(TemplateType.SERVICE, TemplateType.CONTROLLER, TemplateType.MAPPER);
             mpg.setTemplate(templateConfig);
         }

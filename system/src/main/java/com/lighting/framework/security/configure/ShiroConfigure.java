@@ -1,7 +1,6 @@
 package com.lighting.framework.security.configure;
 
 import com.lighting.framework.security.MyShiroRealm;
-import com.lighting.framework.security.SystemLogoutFilter;
 import com.lighting.framework.security.TokenAdapterSession;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
@@ -43,17 +42,10 @@ public class ShiroConfigure {
 			filterChainDefinitionMap.put("/api/login","anon");
 			filterChainDefinitionMap.put("/api/**", "authc");
 		}
-		// 未授权界面;
-		shiroFilterFactoryBean.setUnauthorizedUrl("/api/unauthorized");
-
-
 		//注销过滤器
 		Map<String, javax.servlet.Filter> shiroFilterFactoryFiltersMap = new LinkedHashMap<String, javax.servlet.Filter>();
-		//shiroFilterFactoryFiltersMap.put("authc", new VueFormAuthenticationFilter(shiroFilterFactoryBean.getUnauthorizedUrl()));
-		shiroFilterFactoryFiltersMap.put("logout",new SystemLogoutFilter());
 		shiroFilterFactoryBean.setFilters(shiroFilterFactoryFiltersMap);
 
-		//shiroFilterFactoryBean.getFilters().put("authc", new VueFormAuthenticationFilter(shiroFilterFactoryBean.getUnauthorizedUrl()));
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilterFactoryBean;
 	}

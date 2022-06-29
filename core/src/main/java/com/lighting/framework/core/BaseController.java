@@ -20,7 +20,7 @@ public class BaseController {
 
 	public <T> StandardResponse<T> buildStandardResponse(T t) {
 		StandardResponse<T> response = new StandardResponse<T>(0, "success");
-		response.setDomain(t);
+		response.setData(t);
 		return response;
 	}
 
@@ -32,7 +32,7 @@ public class BaseController {
 
 	public <T> StandardResponse<T> buildRowsResponse(T page) {
 		StandardResponse<T> response = new StandardResponse<T>(0, "success");
-		response.setDomain(page);
+		response.setData(page);
 		return response;
 	}
 	@InitBinder

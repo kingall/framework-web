@@ -1,10 +1,10 @@
 package com.lighting.framework.security;
 
-import com.lighting.framework.security.api.AccountService;
-import com.lighting.framework.security.api.ResourceService;
+import com.lighting.framework.security.api.MenuService;
 import com.lighting.framework.security.api.RoleService;
-import com.lighting.framework.security.domain.AbstractAccountShiro;
-import com.lighting.framework.security.domain.AbstractResourceShiro;
+import com.lighting.framework.security.api.UserService;
+import com.lighting.framework.security.domain.AbstractMenuShiro;
+import com.lighting.framework.security.domain.AbstractUserShiro;
 import com.lighting.framework.security.domain.AbstractRoleShiro;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -23,13 +23,13 @@ import java.util.List;
 
 public class MyShiroRealm extends AuthorizingRealm {
 	@Autowired
-	private AccountService accountService;
+	private UserService userService;
 
 	@Autowired
 	private RoleService roleService;
 
 	@Autowired
-	private ResourceService resourceService;
+	private MenuService menuService;
 
 	// 权限信息，包括角色以及权限
 	@Override
@@ -37,14 +37,14 @@ public class MyShiroRealm extends AuthorizingRealm {
 		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 		// 如果身份认证的时候没有传入User对象，这里只能取到userName
 		// 也就是SimpleAuthenticationInfo构造的时候第一个参数传递需要User对象
-		AbstractAccountShiro user = (AbstractAccountShiro) principals.getPrimaryPrincipal();
+		AbstractUserShiro user = (AbstractUserShiro) principals.getPrimaryPrincipal();
 		List<AbstractRoleShiro> roleList = roleService.getRoleListByUserId(user.getId());
 		for (AbstractRoleShiro role : roleList) {
 			authorizationInfo.addRole(role.getId());
 			// 根据角色id获取资源
-			List<AbstractResourceShiro> resourceList = resourceService.getResourceListByRoleId(role.getId());
-			for (AbstractResourceShiro resource : resourceList) {
-				authorizationInfo.addStringPermission(resource.getUrl());
+			List<AbstractMenuShiro> menuList = menuService.getMenuListByRoleId(role.getId());
+			for (AbstractMenuShiro menu : menuList) {
+				authorizationInfo.addStringPermission(menu.getPath());
 			}
 		}
 		return authorizationInfo;
@@ -57,7 +57,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 		String userName = (String) token.getPrincipal();
 		// 通过username从数据库中查找 User对象.
 		// 实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
-		AbstractAccountShiro user = accountService.findAccountByUserName(userName);
+		AbstractUserShiro user = userService.findUserByUserName(userName);
 		if (user == null) {
 			return null;
 		}

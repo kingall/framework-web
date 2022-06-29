@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.po.TableFill;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -44,23 +45,33 @@ public class CodeGenerateConfig {
     @Value("${default.table.prefix}")
     private String tablePrefix;
 
+    @Value("${subsystem.name}")
+    private String subsystemName;
 
     private String projectPath = System.getProperty("user.dir");
 
-    private String outputDir = System.getProperty("user.dir")+"/src/main/java";
+    private String outputDir = System.getProperty("user.dir") + "/src/main/java";
 
     @Autowired
     private DataSourceProperties dataSourceProperties;
 
+    private String getOutputDir() {
+        if (!StringUtils.isEmpty(subsystemName)) {
+            return projectPath + "/" + subsystemName + "/src/main/java";
+        } else {
+            return System.getProperty("user.dir") + "/src/main/java";
+        }
+    }
 
     /**
      * 获取生成全局配置
+     *
      * @return
      */
 
-    public GlobalConfig getGlobalConfig(){
+    public GlobalConfig getGlobalConfig() {
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir(outputDir);
+        gc.setOutputDir(getOutputDir());
         gc.setAuthor(author);
         gc.setOpen(false);
         gc.setSwagger2(isGenSwagger2);
@@ -72,9 +83,10 @@ public class CodeGenerateConfig {
 
     /**
      * 获取数据源配置
+     *
      * @return
      */
-    public DataSourceConfig getDataSourceConfig(){
+    public DataSourceConfig getDataSourceConfig() {
         DataSourceConfig dataSource = new DataSourceConfig().setDbType(DbType.getDbType(dbType))// 数据库类型
                 .setDriverName(dataSourceProperties.getDriverClassName())
                 .setUsername(dataSourceProperties.getUsername()).setPassword(dataSourceProperties.getPassword())
@@ -85,7 +97,7 @@ public class CodeGenerateConfig {
     /**
      * 策略配置
      */
-    public StrategyConfig getStrategyConfig(){
+    public StrategyConfig getStrategyConfig() {
         StrategyConfig strategy = new StrategyConfig();
 
         strategy.setNaming(NamingStrategy.underline_to_camel);
@@ -97,8 +109,8 @@ public class CodeGenerateConfig {
 
         //默认实体
         strategy.setLogicDeleteFieldName("isdel");
-        List<TableFill> tableFillList= new ArrayList<TableFill>();
-        TableFill fill=new TableFill("update_time", FieldFill.INSERT_UPDATE);
+        List<TableFill> tableFillList = new ArrayList<TableFill>();
+        TableFill fill = new TableFill("update_time", FieldFill.INSERT_UPDATE);
         tableFillList.add(fill);
         fill = new TableFill("create_time", FieldFill.INSERT);
         tableFillList.add(fill);
@@ -152,8 +164,5 @@ public class CodeGenerateConfig {
         return projectPath;
     }
 
-    public String getOutputDir() {
-        return outputDir;
-    }
 }
 

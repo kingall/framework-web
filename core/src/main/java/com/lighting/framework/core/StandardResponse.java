@@ -1,5 +1,7 @@
 package com.lighting.framework.core;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+
 import java.io.Serializable;
 
 public class StandardResponse<T> extends BaseResponse<Serializable> {
@@ -8,14 +10,25 @@ public class StandardResponse<T> extends BaseResponse<Serializable> {
 		super(code, msg);
 	}
 
-	private T domain;
+	private T data;
 
-	public T getDomain() {
-		return domain;
+	public T getData() {
+		return data;
 	}
 
-	public void setDomain(T domain) {
-		this.domain = domain;
+	public void setData(T data) {
+		this.data = data;
 	}
-	
+
+	public static StandardResponse data(Object data){
+		StandardResponse response = new StandardResponse(200, "操作成功！");
+		response.setData(data);
+		return response;
+	}
+
+	public static StandardResponse data(IPage page){
+		StandardResponse response = new StandardResponse(200, "操作成功！");
+		response.setData(page);
+		return response;
+	}
 }

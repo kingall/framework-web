@@ -1,9 +1,13 @@
 package com.lighting.framework.system.service.impl;
 
-import com.lighting.framework.system.domain.Role;
-import com.lighting.framework.system.mapper.RoleMapper;
-import com.lighting.framework.system.service.RoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lighting.framework.security.domain.AbstractRoleShiro;
+import com.lighting.framework.system.entity.Dept;
+import com.lighting.framework.system.entity.Role;
+import com.lighting.framework.system.mapper.DeptMapper;
+import com.lighting.framework.system.mapper.RoleMapper;
+import com.lighting.framework.system.service.IDeptService;
+import com.lighting.framework.system.service.IRoleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,14 +18,13 @@ import java.util.List;
  * </p>
  *
  * @author chenwei
- * @since 2019-12-31
+ * @since 2022-06-03
  */
 @Service
-public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
+public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
-	@Override
-	public List getRoleListByUserId(String uid) {
-		return baseMapper.getRoleListByUserId(uid);
-	}
-
+    @Override
+    public List<AbstractRoleShiro> getRoleListByUserId(String uid) {
+        return baseMapper.getRoleListByUserId(uid);
+    }
 }

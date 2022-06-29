@@ -54,4 +54,10 @@ public class RowsResponse<T> extends BaseResponse<Serializable> {
 		this.current = current;
 	}
 
+	public static RowsResponse data(Iterable<?> rows){
+		RowsResponse response  = new RowsResponse(200,"操作成功！");
+		response.setRows(rows);
+		return response;
+	}
+
 }

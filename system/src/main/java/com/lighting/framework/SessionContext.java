@@ -1,6 +1,6 @@
 package com.lighting.framework;
 
-import com.lighting.framework.system.domain.Account;
+import com.lighting.framework.system.entity.User;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -11,28 +11,28 @@ import org.springframework.web.context.WebApplicationContext;
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class SessionContext {
     //当前用户
-    private Account currentAccount;
+    private User currentUser;
 
-    public Account getCurrentAccount() {
-        if(currentAccount == null){
-            currentAccount = (Account) SecurityUtils.getSubject().getPrincipal();
+    public User getCurrentUser() {
+        if(currentUser == null){
+            currentUser = (User) SecurityUtils.getSubject().getPrincipal();
         }
-        return currentAccount;
+        return currentUser;
     }
 
-    public void setCurrentAccount(Account currentAccount) {
-        this.currentAccount = currentAccount;
+    public void setCurrentAccount(User currentUser) {
+        this.currentUser = currentUser;
     }
 
     /**
      * 获取登录账号id
      * @return
      */
-    public String getAccountId(){
-        if(getCurrentAccount()==null){
+    public String getUserId(){
+        if(getCurrentUser()==null){
             return "";
         }
-        return getCurrentAccount().getId();
+        return getCurrentUser().getId();
     }
 
     /**
@@ -40,29 +40,26 @@ public class SessionContext {
      * @return
      */
     public String getUserName(){
-        if(getCurrentAccount()==null){
+        if(getCurrentUser()==null){
             return "";
         }
-        return getCurrentAccount().getUsername();
+        return getCurrentUser().getUsername();
     }
-    /**
-     * 获取登录用户组织机构code
-     * @return
-     */
-    public String getOrgCode(){
-        if(getCurrentAccount()==null){
-            return SystemConstant.ROOT_ORG_CODE;
+
+    public String getLoginName(){
+        if(getCurrentUser()==null){
+            return "";
         }
-        return getCurrentAccount().getOrgCode();
+        return getCurrentUser().getUsername();
     }
     /**
      * 获取登录用户组织机构code
      * @return
      */
     public String getDeptCode(){
-        if(getCurrentAccount()==null){
-            return SystemConstant.ROOT_DEPT_CODE;
+        if(getCurrentUser()==null){
+            return SystemConstant.ROOT_ORG_CODE;
         }
-        return getCurrentAccount().getDepartmentCode();
+        return getCurrentUser().getDeptCode();
     }
 }

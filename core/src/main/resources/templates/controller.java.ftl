@@ -17,9 +17,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import cn.alldimensions.framework.core.BaseController;
-import cn.alldimensions.framework.core.BaseResponse;
-import cn.alldimensions.framework.core.util.QueryWrapperBuilder;
+import com.lighting.framework.core.BaseController;
+import com.lighting.framework.core.BaseResponse;
+import com.lighting.framework.core.util.QueryWrapperBuilder;
 
 import ${package.Entity}.${entity};
 import ${package.Service}.${table.serviceName};
@@ -56,7 +56,7 @@ public class ${table.controllerName} extends BaseController{
 
 	/**
 	 * 列表查询
-	 * 
+	 *
 	 * @return
 	 */
 	@PostMapping("/get${entity}List")
@@ -64,10 +64,10 @@ public class ${table.controllerName} extends BaseController{
 		List<${entity}> list = ${table.serviceImplName?uncap_first}.list(QueryWrapperBuilder.buildFromRequest(request));
 		return buildRowsResponse(list);
 	}
-	
+
 	/**
 	 * 分页查询查询
-	 * 
+	 *
 	 * @return
 	 */
 	@PostMapping("/get${entity}ListByPage")
@@ -75,10 +75,10 @@ public class ${table.controllerName} extends BaseController{
 		IPage<${entity}> iPage = ${table.serviceImplName?uncap_first}.page(page, QueryWrapperBuilder.buildFromRequest(request));
 		return buildRowsResponse(iPage);
 	}
-	
+
 	/**
 	 * 保存数据
-	 * 
+	 *
 	 * @return
 	 */
 	@PostMapping("/save${entity}")
@@ -86,10 +86,10 @@ public class ${table.controllerName} extends BaseController{
 		${table.serviceImplName?uncap_first}.saveOrUpdate(${entity});
 		return new BaseResponse(0, "保存成功");
 	}
-	
+
 	/**
 	 * 删除数据
-	 * 
+	 *
 	 * @return
 	 */
 	@PostMapping("/del${entity}ById")
@@ -97,10 +97,10 @@ public class ${table.controllerName} extends BaseController{
 		${table.serviceImplName?uncap_first}.removeById(id);
 		return new BaseResponse(0, "删除成功");
 	}
-	
+
 	/**
 	 * 根据id获取数据
-	 * 
+	 *
 	 * @return
 	 */
 	@PostMapping("/get${entity}ById")

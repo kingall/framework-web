@@ -1,0 +1,23 @@
+server:
+  port: 8081 # 应用端口配置
+spring:
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 50MB # 文件上传请求文件大小配置
+      max-request-size: 100MB # 文件上传请求大小配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/lighting?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123456
+# 日志配置
+logging:
+  level:
+    cn: debug
+    com: debug
+  file:
+    name: core.log
+

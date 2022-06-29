@@ -1,5 +1,6 @@
-package com.lighting.framework.core.configure;
+package com.lighting.framework.configure;
 
+import com.lighting.framework.core.configure.SwaggerConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -19,9 +20,15 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Profile("dev")
 @Configuration
 @Component
-public class SwaggerConfig {
-
-    public ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("Lighting Api").version("1.0").build();
+public class SystemSwaggerConfig extends SwaggerConfig {
+    @Bean
+    Docket createRestApi() {
+        return new Docket(DocumentationType.OAS_30)
+                .groupName("系统管理接口")
+                .apiInfo(super.apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.lighting.framework.system"))
+                .paths(PathSelectors.any())
+                .build();
     }
 }
